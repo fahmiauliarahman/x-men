@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HeroesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HeroesController@index')->name('heroes.index');
+Route::match(['get', 'post'], '/simulasi', 'HeroesController@simulasi')->name('simulasi');
+Route::resource('hero', 'HeroesController')->except('index', 'create', 'edit');
+Route::resource('hero_skill', 'Heroes_SkillController')->except('index', 'create', 'edit', 'show', 'update');
