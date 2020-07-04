@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'HeroesController@index')->name('heroes.index');
+Route::post('/exportpdf', 'HeroesController@exportpdf')->name('exportpdf');
+Route::post('/exportexcel', 'HeroesController@exportexcel')->name('exportexcel');
 Route::match(['get', 'post'], '/simulasi', 'HeroesController@simulasi')->name('simulasi');
 Route::resource('hero', 'HeroesController')->except('index', 'create', 'edit');
 Route::resource('hero_skill', 'Heroes_SkillController')->except('index', 'create', 'edit', 'show', 'update');

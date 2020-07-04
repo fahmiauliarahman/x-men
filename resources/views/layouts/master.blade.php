@@ -12,7 +12,7 @@
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 
-    <title>{{ $judul }}</title>
+    <title>{{ $judul ?? '' }}</title>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
         </div>
     </nav>
     <div class="container my-3">
-        <h1>{{ $judul }}</h1>
+        <h1>{{ $judul ?? '' }}</h1>
         <p>Ini adalah X-MEN, ini adalah tentang para pahlawan pembela bumi. </p>
         <hr>
         @if(session()->has('success'))

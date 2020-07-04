@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Heroes;
 use App\Heroes_skill;
 use Illuminate\Http\Request;
+use PDF;
+use App\Exports\ChildExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HeroesController extends Controller
 {
@@ -130,5 +133,42 @@ class HeroesController extends Controller
             return redirect()->back()->with('error', 'Harap Masukkan Suami & Istri');
         }
         return view('simulasi.index', compact('judul', 'hero_male', 'hero_female'));
+    }
+
+    public function exportpdf(Request $request)
+    {
+        $hero_male = Heroes::where('jenis_kel', 'Laki - Laki')->get();
+        $hero_female = Heroes::where('jenis_kel', 'Perempuan')->get();
+        if (count($request->all()) === 3) {
+            $hero_male_id = $request->hero_male_id;
+            $hero_female_id = $request->hero_female_id;
+            $get_male = Heroes::where('id', $hero_male_id)->first();
+            $get_female = Heroes::where('id', $hero_female_id)->first();
+            if ($get_male->jenis_kel === "Laki - Laki" && $get_female->jenis_kel === "Perempuan") {
+                $a1 = Heroes_skill::where('heroes_id', $hero_male_id)->get()->toArray();
+                $a2 = Heroes_skill::where('heroes_id', $hero_female_id)->get()->toArray();
+                $child_skill = array_merge($a1, $a2);
+                // dd($child_skill);
+                $pdf = PDF::loadview('simulasi.export', compact('child_skill', 'hero_male', 'hero_female', 'get_male', 'get_female'));
+                return $pdf->download('laporan-child');
+                // return $pdf->stream();
+            } else {
+                return redirect()->back()->with('error', 'Invalid Request! Masa jeruk makan jeruk...');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Invalid Data');
+        }
+    }
+    public function exportexcel(Request $request)
+    {
+        $hero_male = Heroes::where('jenis_kel', 'Laki - Laki')->get();
+        $hero_female = Heroes::where('jenis_kel', 'Perempuan')->get();
+        if (count($request->all()) === 3) {
+            $l = $request->hero_male_id;
+            $p = $request->hero_female_id;
+            return Excel::download(new ChildExport($l, $p), 'child.xlsx');
+        } else {
+            return redirect()->back()->with('error', 'Invalid Data');
+        }
     }
 }
