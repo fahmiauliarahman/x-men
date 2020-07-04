@@ -42,6 +42,10 @@ class HeroesController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama' => 'bail|required|max:255',
+            'jenis_kel' => 'required',
+        ]);
         Heroes::create($request->all());
         return redirect()->route('heroes.index')->with('success', 'Hero Berhasil Ditambahkan!');
     }
@@ -61,17 +65,6 @@ class HeroesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -80,6 +73,10 @@ class HeroesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama' => 'bail|required|max:255',
+            'jenis_kel' => 'required',
+        ]);
         Heroes::where('id', $id)
             ->update([
                 'nama' => $request->nama,

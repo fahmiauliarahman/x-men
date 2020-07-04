@@ -23,6 +23,9 @@ class Heroes_SkillController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             return redirect()->back()->with('error', 'Invalid Hero Token!');
         };
+        $request->validate([
+            'nama_skill' => 'bail|required|max:255',
+        ]);
         Heroes_skill::create(['heroes_id' => $heroes_id, 'nama_skill' => $request->nama_skill]);
         return redirect()->back()->with('success', 'Skill Berhasil Ditambahkan!');
     }

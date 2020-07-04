@@ -35,6 +35,15 @@
         <h1>{{ $judul ?? '' }}</h1>
         <p>Ini adalah X-MEN, ini adalah tentang para pahlawan pembela bumi. </p>
         <hr>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         @if(session()->has('success'))
         <div class="alert alert-success my-3">
             <strong>Success!</strong> {{ session('success') }}.
